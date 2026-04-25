@@ -214,16 +214,13 @@ def create_qishui_music_config() -> AppConfig:
             print("等待10秒钟...")
             automation.common_actions.wait_seconds(10.0)
     
-    def scroll_to_bottom(automation: AppAutomation) -> None:
-        """滑动到页面底部。"""
+    def scroll_slightly(automation: AppAutomation) -> None:
+        """轻微滑动页面，确保任务列表可见。"""
         if automation.common_actions:
-            print("滑动到页面底部...")
+            print("轻微滑动页面，确保任务列表可见...")
             automation.common_actions.swipe_up()
             automation.common_actions.wait_seconds(1.0)
-            automation.common_actions.swipe_up()
-            automation.common_actions.wait_seconds(1.0)
-            automation.common_actions.swipe_up()
-            print("已完成多次滑动操作")
+            print("已完成滑动操作")
     
     def click_complete_button(automation: AppAutomation) -> None:
         """点击"连续刷视频赚金币"右边的"去完成"按钮。"""
@@ -232,8 +229,9 @@ def create_qishui_music_config() -> AppConfig:
             if not automation.common_actions.click_by_text("去完成"):
                 print("未找到文本'去完成'，尝试其他方式...")
                 if not automation.common_actions.click_by_description("去完成"):
-                    print("尝试通过坐标点击右侧位置...")
-                    automation.common_actions.click_by_coordinates(0.8, 0.6)
+                    print("尝试通过精确坐标点击...")
+                    print("根据估算: x≈88% 屏幕宽度, y≈33% 屏幕高度")
+                    automation.common_actions.click_by_coordinates(0.88, 0.33)
     
     return AppConfig(
         name="汽水音乐",
@@ -244,7 +242,7 @@ def create_qishui_music_config() -> AppConfig:
         steps=[
             click_welfare,
             wait_after_welfare,
-            scroll_to_bottom,
+            scroll_slightly,
             click_complete_button,
             wait_after_welfare
         ]
