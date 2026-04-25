@@ -208,19 +208,26 @@ def create_qishui_music_config() -> AppConfig:
                     print("尝试通过坐标点击底部导航栏位置...")
                     automation.common_actions.click_by_coordinates(0.8, 0.95)
     
-    def wait_after_welfare(automation: AppAutomation) -> None:
+    def wait_after_welfare_5s(automation: AppAutomation) -> None:
+        """进入福利页面后等待5秒钟。"""
+        if automation.common_actions:
+            print("进入福利页面后等待5秒钟...")
+            automation.common_actions.wait_seconds(5.0)
+    
+    def wait_10s(automation: AppAutomation) -> None:
         """等待10秒钟。"""
         if automation.common_actions:
             print("等待10秒钟...")
             automation.common_actions.wait_seconds(10.0)
     
-    def scroll_slightly(automation: AppAutomation) -> None:
-        """轻微滑动页面，确保任务列表可见。"""
+    def scroll_to_bottom(automation: AppAutomation) -> None:
+        """滑动到页面最底部。"""
         if automation.common_actions:
-            print("轻微滑动页面，确保任务列表可见...")
-            automation.common_actions.swipe_up()
-            automation.common_actions.wait_seconds(1.0)
-            print("已完成滑动操作")
+            print("滑动到页面最底部...")
+            for i in range(5):
+                automation.common_actions.swipe_up()
+                automation.common_actions.wait_seconds(1.0)
+            print("已完成5次滑动操作，到达页面底部")
     
     def click_complete_button(automation: AppAutomation) -> None:
         """点击"连续刷视频赚金币"右边的"去完成"按钮。"""
@@ -241,9 +248,9 @@ def create_qishui_music_config() -> AppConfig:
         post_launch_delay=10.0,
         steps=[
             click_welfare,
-            wait_after_welfare,
-            scroll_slightly,
+            wait_after_welfare_5s,
+            scroll_to_bottom,
             click_complete_button,
-            wait_after_welfare
+            wait_10s
         ]
     )
