@@ -193,3 +193,59 @@ def create_wechat_config() -> AppConfig:
         post_launch_delay=5.0,
         steps=[click_me_tab]
     )
+
+
+def create_qishui_music_config() -> AppConfig:
+    """创建汽水音乐应用配置。"""
+    
+    def click_welfare(automation: AppAutomation) -> None:
+        """点击福利按钮或者文本。"""
+        if automation.common_actions:
+            print("尝试点击'福利'按钮或文本...")
+            if not automation.common_actions.click_by_text("福利"):
+                print("未找到文本'福利'，尝试其他方式...")
+                if not automation.common_actions.click_by_description("福利"):
+                    print("尝试通过坐标点击底部导航栏位置...")
+                    automation.common_actions.click_by_coordinates(0.8, 0.95)
+    
+    def wait_after_welfare(automation: AppAutomation) -> None:
+        """等待10秒钟。"""
+        if automation.common_actions:
+            print("等待10秒钟...")
+            automation.common_actions.wait_seconds(10.0)
+    
+    def scroll_to_bottom(automation: AppAutomation) -> None:
+        """滑动到页面底部。"""
+        if automation.common_actions:
+            print("滑动到页面底部...")
+            automation.common_actions.swipe_up()
+            automation.common_actions.wait_seconds(1.0)
+            automation.common_actions.swipe_up()
+            automation.common_actions.wait_seconds(1.0)
+            automation.common_actions.swipe_up()
+            print("已完成多次滑动操作")
+    
+    def click_complete_button(automation: AppAutomation) -> None:
+        """点击"连续刷视频赚金币"右边的"去完成"按钮。"""
+        if automation.common_actions:
+            print("尝试点击'去完成'按钮...")
+            if not automation.common_actions.click_by_text("去完成"):
+                print("未找到文本'去完成'，尝试其他方式...")
+                if not automation.common_actions.click_by_description("去完成"):
+                    print("尝试通过坐标点击右侧位置...")
+                    automation.common_actions.click_by_coordinates(0.8, 0.6)
+    
+    return AppConfig(
+        name="汽水音乐",
+        package_keyword="luna.music",
+        package_name=None,
+        launch_timeout=10.0,
+        post_launch_delay=10.0,
+        steps=[
+            click_welfare,
+            wait_after_welfare,
+            scroll_to_bottom,
+            click_complete_button,
+            wait_after_welfare
+        ]
+    )
