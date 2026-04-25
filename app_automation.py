@@ -120,13 +120,58 @@ def create_alipay_config() -> AppConfig:
                     print("尝试通过坐标点击右下角...")
                     automation.common_actions.click_by_coordinates(0.85, 0.95)
     
+    def click_alipay_member(automation: AppAutomation) -> None:
+        """点击'支付宝会员'。"""
+        if automation.common_actions:
+            print("尝试点击'支付宝会员'...")
+            if not automation.common_actions.click_by_text("支付宝会员"):
+                print("未找到文本'支付宝会员'，尝试其他方式...")
+                if not automation.common_actions.click_by_description("支付宝会员"):
+                    print("尝试通过坐标点击中上位置...")
+                    automation.common_actions.click_by_coordinates(0.5, 0.3)
+    
+    def wait_for_member_page(automation: AppAutomation) -> None:
+        """等待7秒钟，等进入子页面。"""
+        if automation.common_actions:
+            print("等待7秒钟，等进入子页面...")
+            automation.common_actions.wait_seconds(7.0)
+    
+    def click_daily_checkin(automation: AppAutomation) -> None:
+        """点击'每日签到'。"""
+        if automation.common_actions:
+            print("尝试点击'每日签到'...")
+            if not automation.common_actions.click_by_text("每日签到"):
+                print("未找到文本'每日签到'，尝试其他方式...")
+                if not automation.common_actions.click_by_description("每日签到"):
+                    print("尝试通过坐标点击中上位置...")
+                    automation.common_actions.click_by_coordinates(0.5, 0.4)
+    
+    def wait_after_checkin(automation: AppAutomation) -> None:
+        """休眠15秒钟。"""
+        if automation.common_actions:
+            print("休眠15秒钟...")
+            automation.common_actions.wait_seconds(15.0)
+    
+    def go_back_home(automation: AppAutomation) -> None:
+        """返回到手机的Home页面。"""
+        if automation.common_actions:
+            print("返回到手机的Home页面...")
+            automation.common_actions.press_home()
+    
     return AppConfig(
         name="支付宝",
         package_keyword="AlipayGphone",
         package_name=None,
         launch_timeout=10.0,
         post_launch_delay=5.0,
-        steps=[click_my_tab]
+        steps=[
+            click_my_tab,
+            click_alipay_member,
+            wait_for_member_page,
+            click_daily_checkin,
+            wait_after_checkin,
+            go_back_home
+        ]
     )
 
 
